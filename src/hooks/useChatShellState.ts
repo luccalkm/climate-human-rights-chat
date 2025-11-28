@@ -11,6 +11,15 @@ export function useChatShellState() {
   const [renameId, setRenameId] = useState<string | null>(null)
   const [renameTitle, setRenameTitle] = useState('')
   const [deleteId, setDeleteId] = useState<string | null>(null)
+  const [feedbackOpen, setFeedbackOpen] = useState(false)
+  const [feedbackRating, setFeedbackRating] = useState(3)
+  const [feedbackComment, setFeedbackComment] = useState('')
+  const [feedbackAnon, setFeedbackAnon] = useState(false)
+  const [feedbackSubmitting, setFeedbackSubmitting] = useState(false)
+  const [feedbackEmail, setFeedbackEmail] = useState('')
+  const [feedbackName, setFeedbackName] = useState('')
+  const [feedbackAgeRange, setFeedbackAgeRange] = useState('')
+  const [feedbackUsefulness, setFeedbackUsefulness] = useState<'Sim' | 'Não' | ''>('')
 
   useEffect(() => { loadChats() }, [loadChats])
   useEffect(() => { const unsub = listenCurrent(); return () => unsub() }, [currentChatId, listenCurrent])
@@ -61,6 +70,39 @@ export function useChatShellState() {
     await signOut(auth)
   }
 
+  const openFeedback = () => setFeedbackOpen(true)
+  const closeFeedback = () => { if (!feedbackSubmitting) setFeedbackOpen(false) }
+  const submitFeedback = async () => {
+    if (feedbackSubmitting) return
+    setFeedbackSubmitting(true)
+    try {
+      const uid = auth.currentUser?.uid
+      const { buildFeedbackUrl } = await import('../lib/feedback')
+      const url = buildFeedbackUrl({
+        rating: feedbackRating,
+        comment: feedbackComment,
+        email: feedbackEmail || undefined,
+        name: feedbackName || undefined,
+        ageRange: feedbackAgeRange || undefined,
+        usefulness: feedbackUsefulness || undefined,
+        userId: uid,
+        chatId: currentChatId,
+        anonymous: feedbackAnon
+      })
+      window.open(url, '_blank')
+      setFeedbackOpen(false)
+      setFeedbackComment('')
+      setFeedbackRating(3)
+      setFeedbackAnon(false)
+      setFeedbackEmail('')
+      setFeedbackName('')
+      setFeedbackAgeRange('')
+      setFeedbackUsefulness('')
+    } finally {
+      setFeedbackSubmitting(false)
+    }
+  }
+
   return {
     chats,
     messages,
@@ -88,6 +130,25 @@ export function useChatShellState() {
     openDelete,
     closeDelete,
     confirmDelete,
-    logout
+    logout,
+    feedbackOpen,
+    feedbackRating,
+    feedbackComment,
+    feedbackAnon,
+    feedbackSubmitting,
+    feedbackEmail,
+    feedbackName,
+    feedbackAgeRange,
+    feedbackUsefulness,
+    openFeedback,
+    closeFeedback,
+    submitFeedback,
+    setFeedbackRating,
+    setFeedbackComment,
+    setFeedbackAnon,
+    setFeedbackEmail,
+    setFeedbackName,
+    setFeedbackAgeRange,
+    setFeedbackUsefulness
   }
 }

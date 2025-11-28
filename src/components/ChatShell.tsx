@@ -8,6 +8,8 @@ import { StickyInputBar } from './StickyInputBar'
 import { SuggestionPrompts } from './SuggestionPrompts'
 import { RenameDialog } from './RenameDialog'
 import { DeleteDialog } from './DeleteDialog'
+import { FeedbackDialog } from './FeedbackDialog'
+import FeedbackIcon from '@mui/icons-material/ThumbUpAlt'
 
 const drawerWidth = 300
 const collapsedWidth = 72
@@ -57,6 +59,48 @@ export default function ChatShell() {
             onCancel={state.closeDelete}
             onConfirm={state.confirmDelete}
           />
+          <FeedbackDialog
+            open={state.feedbackOpen}
+            rating={state.feedbackRating}
+            comment={state.feedbackComment}
+            anonymous={state.feedbackAnon}
+            submitting={state.feedbackSubmitting}
+            email={state.feedbackEmail}
+            name={state.feedbackName}
+            ageRange={state.feedbackAgeRange}
+            usefulness={state.feedbackUsefulness}
+            onChangeEmail={state.setFeedbackEmail}
+            onChangeName={state.setFeedbackName}
+            onChangeAgeRange={state.setFeedbackAgeRange}
+            onChangeUsefulness={state.setFeedbackUsefulness}
+            onChangeRating={state.setFeedbackRating}
+            onChangeComment={state.setFeedbackComment}
+            onToggleAnonymous={() => state.setFeedbackAnon(v => !v)}
+            onCancel={state.closeFeedback}
+            onSubmit={state.submitFeedback}
+          />
+          <Box sx={{ position: 'fixed', bottom: 20, right: 20, zIndex: 2000 }}>
+            <Box
+              onClick={state.openFeedback}
+              sx={{
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+                px: 2,
+                py: 1,
+                borderRadius: 20,
+                background: 'rgba(255,255,255,0.06)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                backdropFilter: 'blur(6px)',
+                transition: 'background .25s, border-color .25s',
+                '&:hover': { background: 'rgba(255,255,255,0.1)', borderColor: 'rgba(255,255,255,0.25)' }
+              }}
+            >
+              <FeedbackIcon fontSize="small" />
+              <Box component="span" sx={{ fontSize: 13, fontWeight: 600 }}>Avaliar</Box>
+            </Box>
+          </Box>
         </Box>
       </Box>
     </AppThemeProvider>
