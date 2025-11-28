@@ -1,4 +1,4 @@
-import { Box, useMediaQuery } from '@mui/material'
+import { Box, useMediaQuery, Fab } from '@mui/material'
 import { AppThemeProvider } from '../theme/AppThemeProvider'
 import { theme } from '../theme/theme'
 import { useChatShellState } from '../hooks/useChatShellState'
@@ -38,6 +38,12 @@ export default function ChatShell() {
           collapsedWidth={collapsedWidth}
         />
         <Box component="main" sx={{ py: 3, flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: 0 }}>
+          {isDesktop && (
+            <Box sx={{ position: 'fixed', top: 12, left: (state.collapsed ? collapsedWidth + 16 : drawerWidth + 16), zIndex: 1500, display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Box component="img" src="/favicon.svg" alt="Logo" sx={{ width: 28, height: 28, opacity: 0.9 }} />
+              <Box component="span" sx={{ fontSize: 13, fontWeight: 700, letterSpacing: .4, color: 'rgba(255,255,255,0.9)' }}>Cadê meus direitos?</Box>
+            </Box>
+          )}
           {state.messages.length === 0 ? (
             <Box sx={{ flex: 1, width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', overflowY: 'auto' }}>
               <SuggestionPrompts onPick={state.sendText} />
@@ -79,27 +85,34 @@ export default function ChatShell() {
             onCancel={state.closeFeedback}
             onSubmit={state.submitFeedback}
           />
-          <Box sx={{ position: 'fixed', bottom: 20, right: 20, zIndex: 2000 }}>
-            <Box
+          <Box sx={{ position: 'fixed', zIndex: 2000,  top: 12, right: 12 }}>
+            <Fab
+              variant="extended"
               onClick={state.openFeedback}
               sx={{
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1,
-                px: 2,
-                py: 1,
-                borderRadius: 20,
-                background: 'rgba(255,255,255,0.06)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                backdropFilter: 'blur(6px)',
-                transition: 'background .25s, border-color .25s',
-                '&:hover': { background: 'rgba(255,255,255,0.1)', borderColor: 'rgba(255,255,255,0.25)' }
+                background: 'rgba(255,255,255,0.08)',
+                color: '#fff',
+                fontWeight: 600,
+                letterSpacing: .5,
+                backdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255,255,255,0.18)',
+                boxShadow: '0 4px 18px rgba(0,0,0,0.4)',
+                '&:hover': {
+                  background: 'rgba(255,255,255,0.14)',
+                  borderColor: 'rgba(255,255,255,0.3)',
+                  boxShadow: '0 6px 22px rgba(0,0,0,0.55)'
+                },
+                '@keyframes pulse': {
+                  '0%': { boxShadow: '0 0 0 0 rgba(255,255,255,0.35)' },
+                  '70%': { boxShadow: '0 0 0 12px rgba(255,255,255,0)' },
+                  '100%': { boxShadow: '0 0 0 0 rgba(255,255,255,0)' }
+                },
+                animation: 'pulse 3.2s ease-in-out infinite'
               }}
+              size={isDesktop ? 'medium' : 'small'}
             >
-              <FeedbackIcon fontSize="small" />
-              <Box component="span" sx={{ fontSize: 13, fontWeight: 600 }}>Avaliar</Box>
-            </Box>
+              <FeedbackIcon sx={{ mr: 1, color: '#3ecf8e' }} /> Avaliar
+            </Fab>
           </Box>
         </Box>
       </Box>

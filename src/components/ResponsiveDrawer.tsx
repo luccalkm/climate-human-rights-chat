@@ -1,6 +1,5 @@
 import { Drawer, Box, IconButton } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChatDrawer from './ChatDrawer'
 import { type Chat } from '../lib/chats'
 
@@ -40,7 +39,7 @@ export function ResponsiveDrawer({
       {!isDesktop && (
         <Box sx={{ position: 'fixed', top: 8, left: mobileOpen ? "85%" : 8, zIndex: t => t.zIndex.drawer + 2, display: { xs: 'flex', sm: 'none' } }}>
           <IconButton color="primary" onClick={onToggleMobile}>
-            {mobileOpen ? <ChevronLeftIcon /> : <MenuIcon />}
+            {!mobileOpen && <MenuIcon />}
           </IconButton>
         </Box>
       )}

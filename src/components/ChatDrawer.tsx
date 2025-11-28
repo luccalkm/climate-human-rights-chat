@@ -37,7 +37,14 @@ export default function ChatDrawer({ width, chats, currentChatId, onSelect, onNe
   return (
     <Box sx={{ width, display: 'flex', flexDirection: 'column', height: '100%' }} role="presentation">
       <Box p={2} display={'flex'} alignItems="center" justifyContent="space-between">
-        <Typography variant="subtitle1" noWrap sx={{ fontWeight: 600 }}>Conversas</Typography>
+        {isMobile ? (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Box component="img" src="/favicon.svg" alt="Logo" sx={{ width: 28, height: 28, opacity: 0.9 }} />
+            <Typography variant="subtitle2" noWrap sx={{ fontWeight: 700, letterSpacing: .4 }}>Cadê meus direitos?</Typography>
+          </Box>
+        ) : (
+          <Typography variant="subtitle1" noWrap sx={{ fontWeight: 600 }}>Conversas</Typography>
+        )}
         <Stack direction="row" spacing={1}>
           {!isMobile && <IconButton size="small" onClick={onToggleCollapse}>{collapsed ? <MenuIcon /> : <MenuOpenIcon />}</IconButton>}
           <Button variant="outlined" size="small" startIcon={<AddIcon />} onClick={onNew}>Nova</Button>

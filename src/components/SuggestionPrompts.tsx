@@ -13,7 +13,7 @@ export function SuggestionPrompts({ onPick }: { onPick: (text: string) => void }
   });
   
   return (
-    <Box sx={{ width: '100%', maxWidth: { xs: '100%', sm: 900 }, mx: 'auto', textAlign: 'center', mt: { xs: 4, sm: 8 } }}>
+    <Box sx={{ width: '100%', maxWidth: { xs: '90%', sm: 900 }, mx: 'auto', textAlign: 'center', mt: { xs: 4, sm: 8 } }}>
       <Typography variant="h6" sx={{ mb: 3, fontWeight: 600, letterSpacing: 0.5 }}>Sugestões para começar</Typography>
       <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 2 }}>
         {display.map(s => (
